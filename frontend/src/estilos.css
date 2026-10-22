@@ -1,0 +1,1913 @@
+/* ==========================================================================
+   Almuerzo de la Oficina — Design System
+   Producto de comida → paleta cálida apetitosa, estilo vibrant & block-based.
+   Tipografía: Playfair Display SC (títulos) + Karla (texto).
+   ========================================================================== */
+
+:root {
+  color-scheme: light dark;
+
+  /* Color — apetitoso, cálido */
+  --primary: #dc2626;
+  --primary-dark: #b91c1c;
+  --primary-soft: #fee2e2;
+  --primary-ring: rgba(220, 38, 38, 0.18);
+  --on-primary: #fff;
+  --accent: #a16207;
+  --accent-soft: #fef3c7;
+  --accent-border: #fde68a;
+
+  --bg: #fff8f5;
+  --bg-glow-1: rgba(220, 38, 38, 0.05);
+  --bg-glow-2: rgba(161, 98, 7, 0.05);
+  --surface: #ffffff;
+  --surface-sunk: #fdf3ef;
+
+  --text: #1c1917;
+  --text-soft: #57534e;
+  --text-faint: #8a827c;
+
+  --border: #f0e4dd;
+  --border-strong: #e2d3ca;
+
+  --success: #15803d;
+  --success-solid: #15803d;
+  --success-solid-hover: #166534;
+  --success-soft: #dcfce7;
+  --success-border: #bbf7d0;
+  --danger: #b91c1c;
+  --danger-soft: #fee2e2;
+  --danger-border: #fecaca;
+  --warning: #b45309;
+  --warning-soft: #ffedd5;
+  --warning-border: #fed7aa;
+
+  --disabled-bg: #e7ddd6;
+  --skeleton: #f3e9e4;
+  --skeleton-brillo: #fbf5f2;
+  --toast-bg: #1c1917;
+  --overlay: rgba(28, 25, 23, 0.45);
+
+  /* Tipografía */
+  --font-display: 'Playfair Display SC', Georgia, 'Times New Roman', serif;
+  --font-body: 'Karla', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --fs-display: clamp(2.25rem, 5vw, 3rem);
+  --fs-h2: clamp(1.15rem, 2.4vw, 1.4rem);
+  --fs-body: 1rem;
+  --fs-sm: 0.875rem;
+  --fs-xs: 0.8125rem;
+
+  /* Espaciado */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+
+  --radius: 12px;
+  --radius-lg: 18px;
+  --radius-sm: 8px;
+
+  --shadow-sm: 0 1px 2px rgba(69, 10, 10, 0.06);
+  --shadow: 0 4px 16px -4px rgba(69, 10, 10, 0.1);
+  --shadow-lg: 0 18px 40px -18px rgba(120, 20, 20, 0.3);
+  --shadow-arriba: 0 -10px 24px -16px rgba(69, 10, 10, 0.35);
+
+  /* Movimiento: una sola familia de curvas y duraciones para todo */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 150ms;
+  --dur: 240ms;
+  --dur-slow: 420ms;
+  --transition: var(--dur-fast) var(--ease-out);
+}
+
+/* Modo oscuro: mismos tokens, valores para fondo oscuro */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary-dark: #ef4444;
+    --primary-soft: rgba(239, 68, 68, 0.16);
+    --primary-ring: rgba(239, 68, 68, 0.3);
+    --accent: #fbbf24;
+    --accent-soft: rgba(251, 191, 36, 0.1);
+    --accent-border: rgba(251, 191, 36, 0.3);
+
+    --bg: #161210;
+    --bg-glow-1: rgba(239, 68, 68, 0.07);
+    --bg-glow-2: rgba(251, 191, 36, 0.04);
+    --surface: #211b18;
+    --surface-sunk: #2a2320;
+
+    --text: #f5efeb;
+    --text-soft: #c9bdb5;
+    --text-faint: #93877f;
+
+    --border: #342b27;
+    --border-strong: #4a3e38;
+
+    --success: #4ade80;
+    --success-soft: rgba(74, 222, 128, 0.1);
+    --success-border: rgba(74, 222, 128, 0.3);
+    --danger: #f87171;
+    --danger-soft: rgba(248, 113, 113, 0.12);
+    --danger-border: rgba(248, 113, 113, 0.35);
+    --warning: #fb923c;
+    --warning-soft: rgba(251, 146, 60, 0.12);
+    --warning-border: rgba(251, 146, 60, 0.35);
+
+    --disabled-bg: #3a312c;
+    --skeleton: #2a2320;
+    --skeleton-brillo: #362d29;
+    --toast-bg: #3a312c;
+    --overlay: rgba(0, 0, 0, 0.6);
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 18px 40px -18px rgba(0, 0, 0, 0.7);
+    --shadow-arriba: 0 -10px 24px -16px rgba(0, 0, 0, 0.8);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  color: var(--text);
+  background-color: var(--bg);
+  /* Textura sutil de fondo: manchas cálidas muy tenues */
+  background-image:
+    radial-gradient(circle at 12% 8%, var(--bg-glow-1), transparent 45%),
+    radial-gradient(circle at 88% 4%, var(--bg-glow-2), transparent 40%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  color: var(--text);
+  line-height: 1.15;
+  margin: 0 0 var(--sp-4);
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin: 0 0 var(--sp-3);
+}
+
+/* --------------------------------------------------------------------------
+   Animaciones base
+   -------------------------------------------------------------------------- */
+
+@keyframes entrar {
+  from { opacity: 0; transform: translateY(10px); }
+}
+
+@keyframes aparecer {
+  from { opacity: 0; }
+}
+
+@keyframes pop {
+  0% { transform: scale(0.6); }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@keyframes sacudir {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-7px); }
+  40%, 60% { transform: translateX(7px); }
+}
+
+@keyframes dibujar {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes brillo {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+@keyframes latido {
+  50% { transform: scale(1.06); }
+}
+
+@keyframes girar {
+  to { transform: rotate(360deg); }
+}
+
+/* --------------------------------------------------------------------------
+   Estructura
+   -------------------------------------------------------------------------- */
+
+.contenedor {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: var(--sp-5) var(--sp-4) var(--sp-7);
+}
+
+.contenedor-estrecho {
+  max-width: 460px;
+}
+
+/* Encabezado de página: marca + subtítulo */
+.marca {
+  text-align: center;
+  margin-bottom: var(--sp-6);
+  animation: aparecer var(--dur-slow) var(--ease-out) both;
+}
+
+.marca-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  margin-bottom: var(--sp-3);
+  border-radius: 50%;
+  background: linear-gradient(140deg, #dc2626, #b91c1c);
+  color: #fff;
+  box-shadow: var(--shadow);
+  animation: pop var(--dur-slow) var(--ease-spring) both;
+}
+
+.marca h1 {
+  font-size: var(--fs-display);
+  margin-bottom: var(--sp-2);
+}
+
+.marca-sub {
+  color: var(--text-soft);
+  font-size: var(--fs-sm);
+  margin: 0;
+}
+
+.espacio-arriba {
+  margin-top: var(--sp-3);
+}
+
+/* --------------------------------------------------------------------------
+   Tarjetas
+   -------------------------------------------------------------------------- */
+
+.tarjeta {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-5);
+  margin-bottom: var(--sp-4);
+  box-shadow: var(--shadow-sm);
+  animation: entrar var(--dur) var(--ease-out) both;
+}
+
+.tarjeta h2 {
+  font-size: var(--fs-h2);
+  margin-bottom: var(--sp-3);
+}
+
+.panel-pestana {
+  animation: entrar var(--dur) var(--ease-out) both;
+}
+
+.panel-pestana > .tarjeta {
+  animation: none;
+}
+
+/* --------------------------------------------------------------------------
+   Formularios — cada campo tiene label visible (nunca solo placeholder)
+   -------------------------------------------------------------------------- */
+
+.campo {
+  display: block;
+  margin-bottom: var(--sp-4);
+}
+
+.campo-label {
+  display: block;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: var(--sp-2);
+}
+
+.campo-label-centro,
+.campo-ayuda-centro {
+  text-align: center;
+}
+
+.campo-ayuda {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+  margin-top: var(--sp-2);
+}
+
+input[type='text'],
+input[type='password'],
+input[type='number'],
+input[type='time'],
+textarea {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+input[type='time'] {
+  max-width: 200px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-faint);
+}
+
+input:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-ring);
+}
+
+textarea {
+  resize: vertical;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+/* Textarea de texto libre (instrucciones): misma fuente que el resto */
+textarea.texto-normal {
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   PIN en casillas: el input real va encima, invisible
+   -------------------------------------------------------------------------- */
+
+.pin-cajas {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-3);
+  width: max-content;
+  margin: 0 auto;
+}
+
+.pin-cajas.sacudir {
+  animation: sacudir 420ms ease-in-out;
+}
+
+.pin-caja {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 62px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: border-color var(--transition), box-shadow var(--transition),
+    transform var(--transition);
+}
+
+.pin-caja.llena {
+  border-color: var(--text-soft);
+}
+
+.pin-caja.llena::after {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--text);
+  animation: pop var(--dur) var(--ease-spring);
+}
+
+.pin-cajas:focus-within .pin-caja.actual {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-ring);
+  transform: translateY(-2px);
+}
+
+.pin-cajas.sacudir .pin-caja {
+  border-color: var(--danger);
+}
+
+.pin-cajas input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  opacity: 0;
+  cursor: text;
+  /* 16px+ evita el zoom automático de iOS al enfocar */
+  font-size: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   Botones
+   -------------------------------------------------------------------------- */
+
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  font-family: inherit;
+  font-size: var(--fs-body);
+  font-weight: 700;
+  padding: 0.7rem 1.4rem;
+  min-height: 44px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: var(--on-primary);
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition),
+    transform var(--transition), box-shadow var(--transition),
+    border-color var(--transition);
+  box-shadow: var(--shadow-sm);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* El "levantar" al pasar el mouse solo en dispositivos con puntero real:
+   en pantallas táctiles el hover se queda pegado tras tocar. */
+@media (hover: hover) {
+  button:hover:not(:disabled) {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+  }
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.97);
+  transition-duration: 60ms;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+button:disabled {
+  background: var(--disabled-bg);
+  color: var(--text-faint);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+button.ancho {
+  width: 100%;
+}
+
+button.secundario {
+  background: transparent;
+  color: var(--text-soft);
+  border: 1.5px solid var(--border-strong);
+  box-shadow: none;
+}
+
+@media (hover: hover) {
+  button.secundario:hover:not(:disabled) {
+    background: var(--surface-sunk);
+    color: var(--text);
+    box-shadow: none;
+  }
+}
+
+button.secundario:disabled {
+  background: transparent;
+}
+
+button.peligro {
+  background: transparent;
+  color: var(--danger);
+  border: 1.5px solid var(--danger-soft);
+  box-shadow: none;
+}
+
+@media (hover: hover) {
+  button.peligro:hover:not(:disabled) {
+    background: var(--danger-soft);
+    box-shadow: none;
+  }
+}
+
+button.exito {
+  background: var(--success-solid);
+}
+
+@media (hover: hover) {
+  button.exito:hover:not(:disabled) {
+    background: var(--success-solid-hover);
+  }
+}
+
+button.exito:disabled {
+  background: var(--disabled-bg);
+}
+
+button.copiado svg {
+  animation: pop var(--dur) var(--ease-spring);
+}
+
+/* Indicador de carga dentro del botón: toma el color del texto del botón,
+   así se ve en botones primarios, secundarios y deshabilitados. */
+button .cargando {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: girar 0.7s linear infinite;
+}
+
+/* --------------------------------------------------------------------------
+   Avisos (éxito / error / info) — con role="alert" en el JSX
+   -------------------------------------------------------------------------- */
+
+.aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--danger-border);
+  margin-bottom: var(--sp-4);
+  font-size: var(--fs-sm);
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-weight: 600;
+  animation: entrar var(--dur) var(--ease-out) both;
+}
+
+.aviso.exito {
+  background: var(--success-soft);
+  border-color: var(--success-border);
+  color: var(--success);
+}
+
+.aviso.info {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+/* Bienvenida a un comensal nuevo: cálido, no suena a error */
+.aviso.bienvenida {
+  background: var(--success-soft);
+  border-color: var(--success-border);
+  color: var(--success);
+}
+
+.aviso.bienvenida svg {
+  animation: pop var(--dur-slow) var(--ease-spring) both;
+}
+
+.aviso svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.nota {
+  color: var(--text-soft);
+  font-size: var(--fs-sm);
+}
+
+/* --------------------------------------------------------------------------
+   Esqueletos de carga
+   -------------------------------------------------------------------------- */
+
+.esqueleto {
+  display: block;
+  height: 14px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(
+    90deg,
+    var(--skeleton) 25%,
+    var(--skeleton-brillo) 50%,
+    var(--skeleton) 75%
+  );
+  background-size: 200% 100%;
+  animation: brillo 1.4s linear infinite;
+}
+
+.esqueleto-grupo {
+  display: grid;
+  gap: var(--sp-3);
+  padding: var(--sp-2) 0;
+}
+
+.esqueleto-titulo {
+  width: 45%;
+  height: 22px;
+  margin-bottom: var(--sp-4);
+}
+
+.esqueleto-opcion {
+  height: 46px;
+}
+
+.esqueleto-boton {
+  height: 46px;
+  margin-top: var(--sp-5);
+}
+
+/* Estado vacío */
+.vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-6) var(--sp-4);
+  border: 1.5px dashed var(--border-strong);
+  border-radius: var(--radius);
+  color: var(--text-faint);
+  text-align: center;
+}
+
+.vacio p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: var(--fs-sm);
+}
+
+/* --------------------------------------------------------------------------
+   Countdown de cierre de pedidos (pantalla pública)
+   Ámbar → naranja (≤15 min) → rojo con latido (≤5 min)
+   -------------------------------------------------------------------------- */
+
+.countdown {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  padding: var(--sp-3) var(--sp-4) calc(var(--sp-3) + 4px);
+  margin-bottom: var(--sp-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  overflow: hidden;
+  animation: entrar var(--dur) var(--ease-out) both;
+  transition: background-color var(--dur-slow), border-color var(--dur-slow),
+    color var(--dur-slow);
+}
+
+.countdown.pronto {
+  border-color: var(--warning-border);
+  background: var(--warning-soft);
+  color: var(--warning);
+}
+
+.countdown.urgente {
+  border-color: var(--danger-border);
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.countdown-texto {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.countdown-tiempo {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown.urgente .countdown-tiempo {
+  animation: latido 1s ease-in-out infinite;
+}
+
+.countdown-barra {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+}
+
+/* Carril tenue detrás de la barra */
+.countdown-barra::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  opacity: 0.18;
+}
+
+.countdown-barra > span {
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  transform-origin: left;
+  transition: transform 1s linear;
+}
+
+/* --------------------------------------------------------------------------
+   Monto a pagar del comensal (solo visible con el día cerrado)
+   -------------------------------------------------------------------------- */
+
+.monto-pagar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-3) var(--sp-4);
+  margin-bottom: var(--sp-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--success-border);
+  background: var(--success-soft);
+  color: var(--success);
+  animation: entrar var(--dur) var(--ease-out) 120ms both;
+}
+
+.monto-etiqueta {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.monto-valor {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+}
+
+.monto-detalle {
+  font-size: var(--fs-sm);
+  color: var(--text-soft);
+}
+
+/* Deuda pendiente: reemplaza el formulario hasta que se registre el pago */
+.deuda {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  margin-bottom: var(--sp-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--danger-border);
+  background: var(--danger-soft);
+  color: var(--danger);
+  animation: entrar var(--dur) var(--ease-out) both;
+}
+
+.deuda-titulo {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-weight: 700;
+}
+
+.deuda-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--fs-sm);
+  color: var(--text);
+}
+
+.deuda-lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-1) 0;
+  border-top: 1px solid var(--danger-border);
+}
+
+.deuda-texto {
+  margin: 0;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+/* Saludo del comensal con la fecha del día al lado derecho */
+.saludo {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.saludo-fecha {
+  color: var(--text-soft);
+  font-size: var(--fs-sm);
+}
+
+/* --------------------------------------------------------------------------
+   Ticket de pedido confirmado
+   -------------------------------------------------------------------------- */
+
+.ticket {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--sp-2);
+  padding: var(--sp-5) var(--sp-4);
+  margin-bottom: var(--sp-4);
+  border: 2px dashed var(--success-border);
+  border-radius: var(--radius);
+  background: var(--success-soft);
+  animation: entrar var(--dur-slow) var(--ease-spring) both;
+}
+
+.ticket h3 {
+  margin: var(--sp-1) 0 0;
+  font-size: var(--fs-h2);
+  color: var(--success);
+}
+
+.ticket-platos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: var(--sp-2);
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.ticket-mas {
+  color: var(--text-faint);
+  font-weight: 700;
+}
+
+.ticket-nota {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: var(--fs-sm);
+  font-style: italic;
+}
+
+.ticket-saludo {
+  margin: var(--sp-1) 0 0;
+  font-family: var(--font-display);
+  color: var(--success);
+  animation: aparecer var(--dur-slow) var(--ease-out) 700ms both;
+}
+
+.check-animado {
+  color: var(--success);
+}
+
+.check-animado circle,
+.check-animado path {
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.check-animado circle {
+  animation: dibujar 500ms var(--ease-out) forwards;
+}
+
+.check-animado path {
+  stroke-width: 3.5;
+  animation: dibujar 350ms var(--ease-out) 380ms forwards;
+}
+
+/* --------------------------------------------------------------------------
+   Pasos del pedido
+   -------------------------------------------------------------------------- */
+
+.pasos {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  list-style: none;
+  padding: 0;
+  margin: var(--sp-2) 0 var(--sp-5);
+}
+
+.paso {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex: 1;
+  color: var(--text-faint);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  transition: color var(--dur);
+}
+
+.paso:last-child {
+  flex: 0 0 auto;
+}
+
+/* Línea que une cada paso con el siguiente */
+.paso:not(:last-child)::after {
+  content: '';
+  flex: 1;
+  min-width: 12px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--border-strong);
+  transition: background-color var(--dur);
+}
+
+.paso.hecho:not(:last-child)::after {
+  background: var(--success-solid);
+}
+
+.paso-num {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border: 2px solid var(--border-strong);
+  border-radius: 50%;
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  transition: background-color var(--dur), border-color var(--dur), color var(--dur);
+}
+
+.paso.actual {
+  color: var(--text);
+}
+
+.paso.actual .paso-num {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.paso.hecho {
+  color: var(--text-soft);
+}
+
+.paso.hecho .paso-num {
+  background: var(--success-solid);
+  border-color: var(--success-solid);
+  color: #fff;
+  animation: pop var(--dur) var(--ease-spring);
+}
+
+/* --------------------------------------------------------------------------
+   Selección de platos — tarjetas con radio
+   -------------------------------------------------------------------------- */
+
+.grupo-platos {
+  border: none;
+  padding: 0;
+  margin: 0 0 var(--sp-5);
+  min-width: 0;
+}
+
+.grupo-platos legend {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  padding: 0;
+  margin-bottom: var(--sp-3);
+}
+
+.lista.radio {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--sp-2);
+}
+
+.opcion {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: 46px;
+  padding: 0.7rem 0.85rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  cursor: pointer;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  transition: border-color var(--transition), background-color var(--transition),
+    box-shadow var(--transition), transform var(--transition);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Las opciones entran en cascada */
+.lista.radio .opcion {
+  animation: entrar var(--dur) var(--ease-out) both;
+  animation-delay: calc(min(var(--i, 0), 10) * 35ms);
+}
+
+@media (hover: hover) {
+  .opcion:hover {
+    border-color: var(--primary);
+    background: var(--surface-sunk);
+  }
+}
+
+.opcion:active {
+  transform: scale(0.98);
+  transition-duration: 60ms;
+}
+
+/* Ocultamos el radio nativo pero mantenemos el acceso por teclado */
+.opcion input[type='radio'],
+.opcion input[type='checkbox'] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Punto indicador dibujado con CSS */
+.opcion::before {
+  content: '';
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border-strong);
+  border-radius: 50%;
+  transition: border-color var(--transition), box-shadow var(--transition),
+    background-color var(--transition);
+}
+
+.opcion:has(input:checked) {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  font-weight: 700;
+  box-shadow: 0 2px 10px -4px var(--primary-ring);
+}
+
+.opcion:has(input:checked)::before {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 4px var(--primary);
+  animation: pop var(--dur) var(--ease-spring);
+}
+
+.opcion:has(input:focus-visible) {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Checkbox "solo entradas" */
+.opcion.sola {
+  margin-bottom: var(--sp-5);
+}
+
+.opcion.sola::before {
+  border-radius: 5px;
+}
+
+.opcion.sola:has(input:checked)::before {
+  background: var(--primary);
+  box-shadow: inset 0 0 0 3px var(--surface);
+}
+
+/* Bloque que se pliega (fondos cuando se marca "Solo entradas") */
+.plegable {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition: grid-template-rows var(--dur-slow) var(--ease-out),
+    opacity var(--dur) var(--ease-out);
+}
+
+.plegable.cerrado {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
+.plegable > div {
+  min-height: 0;
+  overflow: hidden;
+  /* margen para que el contorno de foco no quede recortado */
+  padding: 4px;
+  margin: -4px;
+}
+
+/* Barra de confirmación fija abajo mientras se elige */
+.cta-fija {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  margin: var(--sp-4) calc(-1 * var(--sp-5)) 0;
+  padding: var(--sp-3) var(--sp-5) calc(var(--sp-3) + env(safe-area-inset-bottom));
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  box-shadow: var(--shadow-arriba);
+}
+
+.cta-fija .aviso {
+  margin-bottom: var(--sp-3);
+}
+
+.cta-resumen {
+  margin: 0 0 var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--text-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cta-resumen strong {
+  color: var(--text);
+}
+
+/* --------------------------------------------------------------------------
+   Pestañas del panel de admin
+   -------------------------------------------------------------------------- */
+
+/* Cerrar sesión: arriba a la derecha, fuera de las pestañas */
+.barra-superior {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--sp-2);
+}
+
+.barra-superior .sesion {
+  min-height: 36px;
+  padding: 0.4rem 0.9rem;
+  font-size: var(--fs-sm);
+  border-radius: 999px;
+}
+
+.pestanas {
+  margin-bottom: var(--sp-5);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Escritorio: las pestañas bajan de línea si no caben */
+.pestanas-lista {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+/* Móvil: una sola fila que se desliza */
+@media (max-width: 639px) {
+  .pestanas-lista {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin: 0 calc(-1 * var(--sp-4));
+    padding: 0 var(--sp-4);
+    scroll-padding: 0 var(--sp-4);
+  }
+
+  /* Difumina el borde solo si quedan pestañas ocultas a la derecha */
+  .pestanas-lista.hay-mas {
+    mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent);
+  }
+
+  .pie-cobros .acciones button {
+    width: 100%;
+  }
+}
+
+.pestanas-lista::-webkit-scrollbar {
+  display: none;
+}
+
+.pestanas-indicador {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 999px;
+  background: var(--primary);
+  box-shadow: var(--shadow);
+  transition: transform var(--dur) var(--ease-out), width var(--dur) var(--ease-out),
+    height var(--dur) var(--ease-out);
+  pointer-events: none;
+}
+
+.pestanas button {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  background: transparent;
+  color: var(--text-soft);
+  border: 1.5px solid transparent;
+  box-shadow: none;
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  padding: 0.5rem 0.8rem;
+  min-height: 40px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+@media (hover: hover) {
+  .pestanas button:hover:not(:disabled) {
+    background: var(--surface-sunk);
+    color: var(--text);
+    transform: none;
+    box-shadow: none;
+  }
+
+  .pestanas button.activa:hover:not(:disabled) {
+    background: transparent;
+    color: #fff;
+  }
+}
+
+.pestanas button.activa {
+  color: #fff;
+}
+
+
+/* --------------------------------------------------------------------------
+   Vista previa del menú (admin)
+   -------------------------------------------------------------------------- */
+
+.vista-previa {
+  margin-bottom: var(--sp-4);
+  padding: var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-sunk);
+  animation: entrar var(--dur) var(--ease-out) both;
+}
+
+.vista-previa-titulo {
+  font-size: var(--fs-sm);
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-soft);
+  margin-bottom: var(--sp-3);
+}
+
+.vista-previa-columnas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--sp-4);
+}
+
+.vista-previa-sub {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  margin-bottom: var(--sp-2);
+}
+
+.contador {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #fff;
+  font-size: var(--fs-xs);
+}
+
+.vista-previa ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--sp-1);
+}
+
+.vista-previa li {
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: var(--fs-sm);
+  animation: entrar var(--dur) var(--ease-out) both;
+  animation-delay: calc(min(var(--i, 0), 10) * 30ms);
+}
+
+.vista-previa-error {
+  margin: 0;
+  color: var(--warning);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Tabla de cobros
+   -------------------------------------------------------------------------- */
+
+.tabla-envoltura {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: var(--sp-4);
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+  min-width: 620px;
+}
+
+.tabla thead th {
+  text-align: left;
+  padding: var(--sp-3);
+  background: var(--surface-sunk);
+  color: var(--text-soft);
+  font-weight: 700;
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--border);
+}
+
+.tabla tbody td {
+  padding: var(--sp-3);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  transition: color var(--dur), background-color var(--dur);
+}
+
+.tabla tbody tr:last-child td {
+  border-bottom: none;
+}
+
+@media (hover: hover) {
+  .tabla tbody tr:hover {
+    background: var(--surface-sunk);
+  }
+}
+
+.tabla .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabla tr.fila-pagada td {
+  color: var(--text-faint);
+}
+
+.tabla td button {
+  min-height: 36px;
+  padding: 0.4rem 0.9rem;
+  font-size: var(--fs-sm);
+  white-space: nowrap;
+}
+
+/* En móvil la tabla pasa a tarjetas: una por comensal */
+@media (max-width: 640px) {
+  .tabla-envoltura {
+    overflow: visible;
+    border: none;
+  }
+
+  .tabla {
+    min-width: 0;
+  }
+
+  .tabla thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .tabla tbody {
+    display: grid;
+    gap: var(--sp-3);
+  }
+
+  .tabla tbody tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-1) var(--sp-3);
+    padding: var(--sp-3) var(--sp-4);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  .tabla tbody td,
+  .tabla tbody tr:last-child td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--sp-2);
+    padding: var(--sp-1) 0;
+    border: none;
+    text-align: left;
+  }
+
+  .tabla tbody td::before {
+    content: attr(data-label);
+    color: var(--text-faint);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .tabla td.celda-comensal,
+  .tabla td[data-label='Pedido'],
+  .tabla td.celda-accion {
+    grid-column: 1 / -1;
+  }
+
+  .tabla td.celda-comensal {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--text);
+  }
+
+  .tabla td.celda-comensal::before,
+  .tabla td[data-label='Pedido']::before {
+    display: none;
+  }
+
+  .tabla td[data-label='Pedido'] {
+    color: var(--text-soft);
+  }
+
+  .tabla td.celda-accion button {
+    width: 100%;
+    min-height: 44px;
+  }
+}
+
+/* Badges de estado */
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: capitalize;
+  animation: pop var(--dur) var(--ease-spring);
+}
+
+.badge.pagado {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.badge.pendiente {
+  background: var(--warning-soft);
+  color: var(--warning);
+}
+
+/* Pedido hecho con deuda / pendiente que pasa a deuda al cerrar */
+.badge.excepcion,
+.badge.deuda {
+  margin-left: var(--sp-2);
+  text-transform: none;
+}
+
+.badge.excepcion {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.badge.deuda {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.acciones-fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+/* Pestaña de deudas: nombre del comensal con su total acumulado */
+.deudor-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.deudor-total {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  color: var(--danger);
+}
+
+.acciones-deudor {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+}
+
+/* --------------------------------------------------------------------------
+   Bloque de cobros de un día — hoy o un día anterior sin cerrar
+   -------------------------------------------------------------------------- */
+
+.dia-cobros + .dia-cobros {
+  margin-top: var(--sp-5);
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--border);
+}
+
+.dia-cobros > h3 {
+  margin-bottom: var(--sp-3);
+}
+
+/* --------------------------------------------------------------------------
+   Resumen de cobros — tarjetas de cifras y barra de avance
+   -------------------------------------------------------------------------- */
+
+.resumen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+
+.dato {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  animation: entrar var(--dur) var(--ease-out) both;
+}
+
+.dato:nth-child(2) { animation-delay: 50ms; }
+.dato:nth-child(3) { animation-delay: 100ms; }
+
+.dato.cobrado { border-left-color: var(--success-solid); }
+.dato.pendiente { border-left-color: var(--warning); }
+
+.dato-etiqueta {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  margin-bottom: var(--sp-1);
+}
+
+.dato-valor {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  line-height: 1.1;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.dato-sub {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+  margin-top: var(--sp-1);
+}
+
+.progreso {
+  position: relative;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--surface-sunk);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.progreso-barra {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--success-solid), #22c55e);
+  transform-origin: left;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.progreso-texto {
+  margin: var(--sp-2) 0 var(--sp-4);
+  font-size: var(--fs-xs);
+  color: var(--text-soft);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Precios — campos con prefijo de moneda
+   -------------------------------------------------------------------------- */
+
+.grid-precios {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+
+.campo-precio {
+  display: block;
+}
+
+.campo-precio > span {
+  display: block;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  margin-bottom: var(--sp-2);
+}
+
+/* Punto que marca el precio modificado y aún sin guardar */
+.campo-precio.cambiado > span::after {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: var(--sp-2);
+  border-radius: 50%;
+  background: var(--warning);
+  vertical-align: middle;
+  animation: pop var(--dur) var(--ease-spring);
+}
+
+.input-moneda {
+  display: flex;
+  align-items: stretch;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--surface);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.campo-precio.cambiado .input-moneda {
+  border-color: var(--warning-border);
+}
+
+.input-moneda:focus-within,
+.campo-precio.cambiado .input-moneda:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-ring);
+}
+
+.input-moneda .prefijo {
+  display: flex;
+  align-items: center;
+  padding: 0 0.7rem;
+  background: var(--surface-sunk);
+  color: var(--text-soft);
+  font-weight: 700;
+  border-right: 1px solid var(--border);
+}
+
+.input-moneda input {
+  border: none;
+  border-radius: 0;
+  font-weight: 600;
+}
+
+.input-moneda input:focus,
+.input-moneda input:focus-visible {
+  box-shadow: none;
+}
+
+.fila-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.cambios-pendientes {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--warning);
+  animation: aparecer var(--dur) var(--ease-out) both;
+}
+
+/* --------------------------------------------------------------------------
+   Pie de cobros (cierre del día)
+   -------------------------------------------------------------------------- */
+
+.pie-cobros {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--sp-2);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--border);
+}
+
+.pie-cobros .acciones {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (min-width: 640px) {
+  .pie-cobros {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Lista de pedidos (texto para copiar y pegar)
+   -------------------------------------------------------------------------- */
+
+.lista-texto {
+  display: block;
+  width: 100%;
+  margin: 0 0 var(--sp-4);
+  padding: var(--sp-4);
+  background: var(--surface-sunk);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+}
+
+.acciones-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+/* --------------------------------------------------------------------------
+   Toasts
+   -------------------------------------------------------------------------- */
+
+@keyframes toast-entrar {
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+}
+
+@keyframes toast-salir {
+  to { opacity: 0; transform: translateY(8px) scale(0.98); }
+}
+
+.toasts {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--sp-4) + env(safe-area-inset-bottom));
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  width: min(440px, calc(100% - 2rem));
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius);
+  background: var(--toast-bg);
+  color: #fff;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  box-shadow: var(--shadow-lg);
+  pointer-events: auto;
+  animation: toast-entrar var(--dur) var(--ease-spring) both;
+}
+
+.toast svg {
+  flex-shrink: 0;
+  color: #4ade80;
+}
+
+.toast.saliendo {
+  animation: toast-salir 220ms var(--ease-out) forwards;
+}
+
+/* --------------------------------------------------------------------------
+   Diálogo de confirmación
+   -------------------------------------------------------------------------- */
+
+@keyframes dialogo-entrar {
+  from { opacity: 0; transform: translateY(12px) scale(0.96); }
+}
+
+.dialogo {
+  width: min(440px, calc(100% - 2rem));
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-lg);
+}
+
+.dialogo[open] {
+  animation: dialogo-entrar var(--dur) var(--ease-spring) both;
+}
+
+.dialogo::backdrop {
+  background: var(--overlay);
+  backdrop-filter: blur(2px);
+}
+
+.dialogo[open]::backdrop {
+  animation: aparecer var(--dur) var(--ease-out) both;
+}
+
+.dialogo-caja {
+  padding: var(--sp-5);
+}
+
+.dialogo-caja h2 {
+  font-size: var(--fs-h2);
+  margin-bottom: var(--sp-3);
+}
+
+.dialogo-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+  margin-top: var(--sp-5);
+}
+
+@media (max-width: 420px) {
+  .dialogo-acciones button {
+    flex: 1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Accesibilidad
+   -------------------------------------------------------------------------- */
+
+.solo-lectura {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Respetamos la preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

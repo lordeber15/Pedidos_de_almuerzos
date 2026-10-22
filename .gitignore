@@ -1,0 +1,17 @@
+# Secretos locales
+.env
+
+# Dependencias
+node_modules/
+dist/
+.vite/
+
+# Docker (volumenes locales)
+dbdata/
+
+# OpenSpec (opcional: comentarios de sesion)
+openspec/.session/
+
+# Sistema
+.DS_Store
+*.log
