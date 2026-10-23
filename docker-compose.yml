@@ -10,7 +10,7 @@ services:
       # Necesario en Linux; en Docker Desktop (macOS/Windows) ya existe
       - "host.docker.internal:host-gateway"
     ports:
-      - "${BACKEND_PORT:-3003}:3000"
+      - "${BACKEND_PORT:-3004}:3000"
     healthcheck:
       test: [ "CMD-SHELL", "node -e \"require('http').get('http://localhost:3000/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))\"" ]
       interval: 10s
@@ -25,10 +25,10 @@ services:
       args:
         # Vite inyecta la URL del API en el build; sale de BACKEND_URL (.env),
         # que puede ser una IP si el sistema se usa en red local.
-        VITE_API_URL: ${BACKEND_URL:-http://localhost:3003}/api
+        VITE_API_URL: ${BACKEND_URL:-http://localhost:3004}/api
     environment:
       # Mantenido por compatibilidad; el valor real viene del build arg
-      VITE_API_URL: ${BACKEND_URL:-http://localhost:3003}/api
+      VITE_API_URL: ${BACKEND_URL:-http://localhost:3004}/api
     ports:
       # nginx sin privilegios escucha en el 8080 dentro del contenedor
       - "${FRONTEND_PORT:-8085}:8080"
