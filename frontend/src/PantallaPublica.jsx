@@ -653,8 +653,8 @@ export default function PantallaPublica() {
               <IconoAlerta />
               <span>
                 Tienes una deuda acumulada de S/{deuda.total.toFixed(2)}. El
-                administrador te autorizó a pedir hoy; este pedido se sumará a
-                lo que debes.
+                administrador te autorizó a pedir hasta que pagues; este pedido
+                se sumará a lo que debes.
               </span>
             </div>
           )}

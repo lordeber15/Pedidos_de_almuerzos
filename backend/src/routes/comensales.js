@@ -96,11 +96,9 @@ routerComensales.post('/identificar', async (req, res) => {
   }
 
   // Deuda de dias anteriores: la pantalla avisa apenas se identifica, sin
-  // esperar a que intente pedir. Con excepcion de hoy puede pedir igual.
-  const [deudas, excepcionHoy] = await Promise.all([
-    deudasPendientes(fecha, fila.id),
-    tieneExcepcion(fila.id, fecha),
-  ]);
+  // esperar a que intente pedir. Con excepcion vigente puede pedir igual.
+  const deudas = await deudasPendientes(fecha, fila.id);
+  const excepcionHoy = await tieneExcepcion(fila.id, fecha, deudas);
 
   return res.json({
     id: fila.id,

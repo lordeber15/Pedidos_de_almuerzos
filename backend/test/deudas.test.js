@@ -5,6 +5,7 @@ import {
   calcularDeudas,
   mensajeDeuda,
   pendientesSinExcepcion,
+  permisoVigente,
   resumenDeuda,
 } from '../src/logic/deudas.js';
 import { resumir } from '../src/logic/totales.js';
@@ -75,6 +76,27 @@ test('mensaje con uno y con varios dias', () => {
   );
   const varios = resumenDeuda(calcularDeudas(PEDIDOS, DELIVERY, { hoy: HOY, comensalId: 1 }));
   assert.match(mensajeDeuda(varios), /S\/ 27\.17 \(pedidos del 20\/10 y 21\/10\)/);
+});
+
+test('permiso del viernes sigue valiendo el lunes y la deuda se acumula', () => {
+  const lunes = '2026-10-26';
+  const deudas = [
+    { fecha: '2026-10-22' }, // primera deuda (dia ya cerrado)
+    { fecha: '2026-10-23' }, // viernes, sin cerrar
+  ];
+  assert.equal(permisoVigente(['2026-10-22'], deudas, lunes), true);
+  assert.equal(permisoVigente(['2026-10-23'], deudas, lunes), true);
+  assert.equal(permisoVigente([], deudas, lunes), false);
+});
+
+test('un permiso anterior a la deuda actual (ya pagada la vieja) no vale', () => {
+  const deudas = [{ fecha: '2026-10-23' }];
+  assert.equal(permisoVigente(['2026-10-20'], deudas, '2026-10-26'), false);
+});
+
+test('sin deudas vale el permiso de hoy; uno futuro nunca', () => {
+  assert.equal(permisoVigente(['2026-10-26'], [], '2026-10-26'), true);
+  assert.equal(permisoVigente(['2026-10-27'], [{ fecha: '2026-10-23' }], '2026-10-26'), false);
 });
 
 test('cierre: un pendiente sin excepcion bloquea, con excepcion no', () => {

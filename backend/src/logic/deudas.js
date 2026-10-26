@@ -1,7 +1,9 @@
 // Deudas pendientes de los comensales.
 // Una deuda es un pedido `pendiente` de un dia anterior a hoy, este o no
 // cerrado ese dia. Quien tiene deuda no puede pedir, salvo que el
-// administrador le de una excepcion para hoy (se puede repetir cada dia).
+// administrador le haya dado una excepcion ("dejar como deuda") desde su
+// deuda mas antigua: vale los dias siguientes (fines de semana incluidos)
+// hasta que pague todo. Si despues vuelve a deber, hace falta otra.
 // El monto de cada deuda sale del mismo `resumir()` de cobros, asi coincide
 // con lo que ve el administrador (precio base + parte del delivery).
 
@@ -118,11 +120,31 @@ export async function deudasPendientes(hoy, comensalId = null) {
   return calcularDeudas(rows, deliveryTotal(), { hoy, comensalId });
 }
 
-// El comensal tiene excepcion para pedir en esa fecha?
-export async function tieneExcepcion(comensalId, fecha) {
+// Nucleo puro: hay una excepcion vigente? Vale la otorgada entre la deuda
+// mas antigua (o hoy, si no debe nada) y hoy.
+export function permisoVigente(fechasExcepcion, deudas, hoy) {
+  const desde = deudas.reduce((min, d) => (d.fecha < min ? d.fecha : min), hoy);
+  return fechasExcepcion.some((f) => f >= desde && f <= hoy);
+}
+
+// Fechas de las excepciones (hasta `hoy`) por comensal.
+export async function fechasExcepciones(hoy, comensalId = null) {
   const { rows } = await query(
-    'SELECT 1 FROM excepciones_deuda WHERE comensal_id = $1 AND fecha = $2',
-    [comensalId, fecha]
+    `SELECT comensal_id, to_char(fecha, 'YYYY-MM-DD') AS fecha
+     FROM excepciones_deuda
+     WHERE fecha <= $1 AND ($2::int IS NULL OR comensal_id = $2)`,
+    [hoy, comensalId]
   );
-  return Boolean(rows[0]);
+  const porComensal = new Map();
+  for (const r of rows) {
+    if (!porComensal.has(r.comensal_id)) porComensal.set(r.comensal_id, []);
+    porComensal.get(r.comensal_id).push(r.fecha);
+  }
+  return porComensal;
+}
+
+// El comensal puede pedir hoy pese a sus `deudas`?
+export async function tieneExcepcion(comensalId, hoy, deudas = []) {
+  const fechas = (await fechasExcepciones(hoy, Number(comensalId))).get(Number(comensalId)) || [];
+  return permisoVigente(fechas, deudas, hoy);
 }

@@ -6,7 +6,9 @@ import { resumir } from '../logic/totales.js';
 import {
   agruparPorComensal,
   deudasPendientes,
+  fechasExcepciones,
   pendientesSinExcepcion,
+  permisoVigente,
 } from '../logic/deudas.js';
 import { hoy } from './pedidos.js';
 
@@ -110,25 +112,24 @@ routerCobros.get('/lista', requiereAdmin, async (req, res) => {
 
 // GET /api/cobros/deudas  (admin)
 // Deudas de dias anteriores (cerrados o no) agrupadas por comensal, con el
-// total acumulado y si ya tiene excepcion para pedir hoy.
+// total acumulado y si tiene una excepcion vigente para pedir.
 routerCobros.get('/deudas', requiereAdmin, async (req, res) => {
   const fecha = hoy();
   const [deudas, excepciones] = await Promise.all([
     deudasPendientes(fecha),
-    query('SELECT comensal_id FROM excepciones_deuda WHERE fecha = $1', [fecha]),
+    fechasExcepciones(fecha),
   ]);
-  const conExcepcion = new Set(excepciones.rows.map((e) => e.comensal_id));
   const comensales = agruparPorComensal(deudas).map((g) => ({
     ...g,
-    excepcion_hoy: conExcepcion.has(g.comensal_id),
+    excepcion_hoy: permisoVigente(excepciones.get(g.comensal_id) || [], g.pedidos, fecha),
   }));
   return res.json({ fecha, comensales });
 });
 
 // POST /api/cobros/excepciones  { comensal_id }  (admin)
-// Excepcion de hoy: el comensal puede pedir aunque tenga deuda (el pedido se
-// suma a lo que debe) y sus pedidos impagos no impiden cerrar el dia. Se
-// puede otorgar cada dia, todas las veces que haga falta.
+// Excepcion: el comensal puede pedir aunque tenga deuda (el pedido se suma
+// a lo que debe) hasta que pague todo, y sus pedidos impagos no impiden
+// cerrar el dia.
 routerCobros.post('/excepciones', requiereAdmin, async (req, res) => {
   const comensalId = Number((req.body || {}).comensal_id);
   if (!Number.isInteger(comensalId) || comensalId <= 0) {
@@ -150,8 +151,8 @@ routerCobros.post('/excepciones', requiereAdmin, async (req, res) => {
 });
 
 // DELETE /api/cobros/excepciones/:comensal_id  (admin)
-// Retira la excepcion de hoy, salvo que el comensal ya la haya usado para
-// pedir con deuda.
+// Retira las excepciones del comensal (hasta hoy), salvo que ya haya usado
+// una hoy para pedir con deuda.
 routerCobros.delete('/excepciones/:comensal_id', requiereAdmin, async (req, res) => {
   const comensalId = Number(req.params.comensal_id);
   const fecha = hoy();
@@ -164,7 +165,7 @@ routerCobros.delete('/excepciones/:comensal_id', requiereAdmin, async (req, res)
       error: 'El comensal ya pidió hoy usando la excepción; no se puede retirar.',
     });
   }
-  await query('DELETE FROM excepciones_deuda WHERE comensal_id = $1 AND fecha = $2', [
+  await query('DELETE FROM excepciones_deuda WHERE comensal_id = $1 AND fecha <= $2', [
     comensalId,
     fecha,
   ]);

@@ -104,10 +104,11 @@ routerPedidos.post('/', async (req, res) => {
     });
   }
 
-  // Deuda de dias anteriores: bloquea el pedido salvo excepcion de hoy
+  // Deuda de dias anteriores: bloquea el pedido salvo excepcion vigente
   // otorgada por el administrador (el nuevo pedido se suma a la deuda).
-  const deuda = resumenDeuda(await deudasPendientes(fecha, Number(comensal_id)));
-  if (deuda && !(await tieneExcepcion(comensal_id, fecha))) {
+  const deudas = await deudasPendientes(fecha, Number(comensal_id));
+  const deuda = resumenDeuda(deudas);
+  if (deuda && !(await tieneExcepcion(comensal_id, fecha, deudas))) {
     return res.status(409).json({
       error: mensajeDeuda(deuda),
       codigo: 'DEUDA_PENDIENTE',

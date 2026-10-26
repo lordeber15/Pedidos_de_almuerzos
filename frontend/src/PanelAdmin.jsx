@@ -666,15 +666,15 @@ function TabCobros() {
     }
   }
 
-  // Excepción de hoy para el comensal: su pedido impago no impide cerrar el
-  // día y queda como deuda (también lo deja pedir hoy aunque deba).
+  // Excepción para el comensal: su pedido impago no impide cerrar el día y
+  // queda como deuda (también lo deja pedir los días siguientes hasta pagar).
   async function dejarComoDeuda(comensalId, nombre) {
     setMensaje(null);
     setEnviando(true);
     try {
       await api.otorgarExcepcion(comensalId);
       await recargar();
-      notificar(`${nombre} tiene excepción hoy: sus pedidos impagos quedarán como deuda.`);
+      notificar(`${nombre} queda con deuda: puede seguir pidiendo hasta que pague.`);
     } catch (err) {
       setMensaje({ tipo: 'error', texto: err.message });
     } finally {
@@ -972,7 +972,7 @@ function BloqueCobros({
 
 // Pestaña con las deudas de días anteriores (cerrados o no) por comensal.
 // Quien debe no puede pedir; el administrador puede cobrar la deuda o darle
-// permiso para pedir hoy (excepción), todas las veces que haga falta.
+// permiso para pedir (excepción) que vale hasta que pague todo.
 function TabDeudas() {
   const notificar = useToast();
   const [datos, setDatos] = useState(null);
@@ -1021,8 +1021,8 @@ function TabDeudas() {
       () =>
         g.excepcion_hoy ? api.quitarExcepcion(g.comensal_id) : api.otorgarExcepcion(g.comensal_id),
       g.excepcion_hoy
-        ? `${g.comensal} ya no puede pedir hoy hasta pagar.`
-        : `${g.comensal} puede pedir hoy; su pedido se sumará a la deuda.`
+        ? `${g.comensal} ya no puede pedir hasta pagar.`
+        : `${g.comensal} puede pedir hasta que pague; sus pedidos se sumarán a la deuda.`
     );
 
   return (
@@ -1030,8 +1030,8 @@ function TabDeudas() {
       <h2>Deudas pendientes</h2>
       <p className="nota">
         Pedidos sin pagar de días anteriores. Quien debe no puede pedir hasta
-        pagar, salvo que le permitas pedir hoy: su nuevo pedido se suma a la
-        deuda.
+        pagar, salvo que le permitas pedir: el permiso vale hasta que pague
+        todo y sus nuevos pedidos se suman a la deuda.
       </p>
       <Aviso mensaje={mensaje} />
       {!datos ? (
@@ -1044,7 +1044,7 @@ function TabDeudas() {
             <div className="deudor-cabecera">
               <h3>
                 {g.comensal}
-                {g.excepcion_hoy && <span className="badge excepcion">Puede pedir hoy</span>}
+                {g.excepcion_hoy && <span className="badge excepcion">Puede pedir</span>}
               </h3>
               <span className="deudor-total">S/{g.total.toFixed(2)}</span>
             </div>
@@ -1097,7 +1097,7 @@ function TabDeudas() {
                 disabled={Boolean(ocupado)}
               >
                 {ocupado === `exc-${g.comensal_id}` && <Cargando />}
-                {g.excepcion_hoy ? 'Quitar permiso de hoy' : 'Permitir pedir hoy'}
+                {g.excepcion_hoy ? 'Quitar permiso' : 'Permitir pedir'}
               </button>
               <button className="exito" onClick={() => cobrarTodo(g)} disabled={Boolean(ocupado)}>
                 {ocupado === `todo-${g.comensal_id}` ? <Cargando /> : <IconoCheck />}
